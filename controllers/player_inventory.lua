@@ -16,7 +16,9 @@ if id == pocketID then
     print(("Computer %d sent a a payload of:\n%s"):format(id, payload))
     if payload then
         if payload == "list" then
-            rednet.send(pocketID, pretty(stockTicker.list()))
+            local vaultInventory = stockTicker.stock()
+            rednet.send(pocketID, vaultInventory)
+            return
         end
         stockTicker.requestFiltered(playerAddress, {
             name = testItem.item,
@@ -27,5 +29,3 @@ if id == pocketID then
 else
     print(("Received invalid request from %d: \n%s"):format(id, payload))
 end
-
--- stockTicker.requestFiltered("chris_inventory", { name = "create:shaft", _requestCount = 64 })
