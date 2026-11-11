@@ -1,6 +1,8 @@
 rednet.open("back")
 rednet.send(10, "list")
-local data = rednet.receive()
+local sender, data = rednet.receive()
 if data then
-    print(data)
+    textutils.pagedPrint(textutils.serialise(data))
+else
+    print("No data found")
 end
