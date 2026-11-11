@@ -16,6 +16,7 @@ if id == pocketID then
     print(("Computer %d sent a a payload of:\n%s"):format(id, payload))
     if payload then
         if payload == "list" then
+            sleep(5)
             local vaultInventory = stockTicker.stock()
             rednet.send(pocketID, vaultInventory)
             return
