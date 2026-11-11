@@ -2,4 +2,4 @@ rednet.open("back")
 
 local quantity, item = ...
 
-print(quantity, item)
+rednet.send(item, quantity)
