@@ -14,15 +14,16 @@ while true do
                 local vaultInventory = stockTicker.stock()
                 rednet.send(pocketID, vaultInventory)
             end
-        elseif payload ~= "list" then
-            print(textutils.serialise(payload))
-            stockTicker.requestFiltered(playerAddress, {
-                name = payload.item,
-                _requestCount = payload.count,
+            if payload ~= "list" then
+                print(textutils.serialise(payload))
+                stockTicker.requestFiltered(playerAddress, {
+                    name = payload.item,
+                    _requestCount = payload.count,
 
-            })
+                })
+            end
+        else
+            print(("Received invalid request from %d: \n%s"):format(id, payload))
         end
-    else
-        print(("Received invalid request from %d: \n%s"):format(id, payload))
     end
 end
