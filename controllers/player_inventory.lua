@@ -15,6 +15,9 @@ local id, payload = rednet.receive()
 if id == pocketID then
     print(("Computer %d sent a a payload of:\n%s"):format(id, payload))
     if payload then
+        if payload == "list" then
+            rednet.send(pocketID, pretty(stockTicker.list()))
+        end
         stockTicker.requestFiltered(playerAddress, {
             name = testItem.item,
             _requestCount = testItem.count,
