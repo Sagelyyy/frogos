@@ -9,6 +9,7 @@ local testItem = {
     count = 64
 }
 
+rednet.open("right")
 local id, payload = rednet.receive()
 
 if id == pocketID then
