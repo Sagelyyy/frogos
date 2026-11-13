@@ -1,5 +1,5 @@
 {
   "runtime.version": "Lua 5.2",
-  "workspace.library": ["../lua-ls-cc-tweaked/library"],
+  "workspace.library": ["../lua-ls-cc-tweaked/library", "../lua-ls-create/library"],
   "workspace.checkThirdParty": false
 }

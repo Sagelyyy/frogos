@@ -8,7 +8,7 @@ rednet.open("right")
 while true do
     local id, payload = rednet.receive()
     if id == pocketID then
-        print(("Computer %d sent a a payload of:\n%s"):format(id, payload))
+        print(("Computer %d sent a a payload of:\n%s"):format(id, textutils.serialise(payload)))
         if payload then
             if payload == "list" then
                 local vaultInventory = stockTicker.stock()
@@ -18,7 +18,7 @@ while true do
                 print(textutils.serialise(payload))
                 stockTicker.requestFiltered(playerAddress, {
                     name = payload.item,
-                    _requestCount = payload.count,
+                    _requestCount = tonumber(payload.count)
 
                 })
             end
