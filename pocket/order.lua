@@ -1,5 +1,5 @@
 local frogSearch = require("lib.item_search")
-local frogList = require("pocket.getList")
+local frogList = require("getList")
 rednet.open("back")
 local quantity, item = ...
 --

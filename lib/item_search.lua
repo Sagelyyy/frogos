@@ -1,38 +1,3 @@
-local testStock = {
-    {
-        name = "minecraft:stone",
-        count = 256
-    },
-    {
-        name = "minecraft:cobblestone",
-        count = 1024
-    },
-    {
-        name = "minecraft:stone_bricks",
-        count = 128
-    },
-    {
-        name = "minecraft:deepslate",
-        count = 64
-    },
-    {
-        name = "minecraft:iron_ingot",
-        count = 320
-    },
-    {
-        name = "create:shaft",
-        count = 305
-    },
-    {
-        name = "minecraft:brass_ingot",
-        count = 503
-    },
-    {
-        name = "minecraft:glass",
-        count = 64
-    }
-}
-
 local frogSearch = {}
 
 local function searchStock(stock, normal, tempTable)
