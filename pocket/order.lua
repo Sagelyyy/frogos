@@ -21,7 +21,7 @@ if stockData ~= nil then
         else
             rednet.send(10, { ["item"] = stockData[1].name, ["count"] = args[1] })
             print("FrogOS: Order submitted!")
-            print("%d x %s"):format(args[1], stockData[1].name)
+            print(("%d x %s"):format(args[1], stockData[1].name))
         end
     end
 end
