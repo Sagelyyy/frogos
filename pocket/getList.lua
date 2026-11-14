@@ -3,7 +3,7 @@ rednet.send(10, "list")
 local sender, data = rednet.receive()
 if data then
     for k, v in ipairs(data) do
-        print(v.name)
+        return { v.name, v.count }
     end
 else
     print("No data found")

@@ -4,7 +4,7 @@ local pocketID = 11
 
 rednet.open("right")
 
-
+print("FrogOS Stock inventory monitor runnning.")
 while true do
     local id, payload = rednet.receive()
     if id == pocketID then
