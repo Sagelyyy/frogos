@@ -15,7 +15,6 @@ while true do
                 rednet.send(pocketID, vaultInventory)
             end
             if payload ~= "list" then
-                print(textutils.serialise(payload))
                 stockTicker.requestFiltered(playerAddress, {
                     name = payload.item,
                     _requestCount = tonumber(payload.count)
