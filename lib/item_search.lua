@@ -31,7 +31,7 @@ function sortByRank(searchString, stockTable)
     local sortedRankedTable = {}
     for k, v in ipairs(stockTable) do
         table.insert(sortedRankedTable,
-            { ["name"] = v.name, ["rank"] = searchRelevancy(searchString, v.name), ["stock"] = v.count })
+            { ["name"] = v.name, ["rank"] = searchRelevancy(searchString, v.name), ["stock"] = v.stock })
     end
     table.sort(sortedRankedTable, rankedComparator)
     return sortedRankedTable
