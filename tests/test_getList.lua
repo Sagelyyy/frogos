@@ -22,4 +22,6 @@ end
 
 local stock = frogList.getStock()
 
-print("Items found: ", #stock)
+for i, v in ipairs(stock) do
+    print(v.name, v.count)
+end

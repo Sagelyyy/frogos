@@ -10,6 +10,33 @@ local function searchStock(stock, normal, tempTable)
     end
 end
 
+function searchRelevancy(searchString, sourceString)
+    local colon = sourceString:find(":", 1, true)
+    local shortName = sourceString:sub(colon + 1)
+
+    if string.sub(searchString, 1, string.len(searchString)) == string.sub(shortName, 1, string.len(searchString)) then
+        return 1 + string.len(searchString) / string.len(shortName)
+    elseif shortName:find(searchString, 1, true) then
+        return string.len(searchString) / string.len(shortName)
+    else
+        return -1
+    end
+end
+
+function rankedComparator(a, b)
+    return a.rank > b.rank
+end
+
+function sortByRank(searchString, stockTable)
+    local sortedRankedTable = {}
+    for k, v in ipairs(stockTable) do
+        table.insert(sortedRankedTable,
+            { ["name"] = v.name, ["rank"] = searchRelevancy(searchString, v.name), ["stock"] = v.count })
+    end
+    table.sort(sortedRankedTable, rankedComparator)
+    return sortedRankedTable
+end
+
 function frogSearch.parse(searchString, stockTable)
     local tempTable = {}
     if type(searchString) == "string" then
@@ -22,7 +49,7 @@ function frogSearch.parse(searchString, stockTable)
                 normalizedSearch = string.gsub(normalizedSearch, "s$", "")
                 searchStock(stockTable, normalizedSearch, tempTable)
             end
-            return tempTable
+            return sortByRank(normalizedSearch, tempTable)
         else
             print("Please enter a valid search.")
         end
