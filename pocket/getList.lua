@@ -6,18 +6,21 @@ function frogList.getStock()
     rednet.send(warehouseID, "list")
 
     local sender, data = rednet.receive(nil, 10)
-    if sender == warehouseID then
-        if type(data) == "table" then
-            if #data > 0 then
-                return data
+    if sender == nil then
+        print("No reply received from warehouse")
+        if sender == warehouseID then
+            if type(data) == "table" then
+                if #data > 0 then
+                    return data
+                else
+                    print("No entries found.")
+                end
             else
-                print("No entries found.")
+                print("Unexpected data returned, data is not a table")
             end
         else
-            print("Unexpected data returned, data is not a table")
+            print(("Invalid reply ID %d"):format(sender))
         end
-    else
-        print(("Invalid reply ID %d"):format(sender))
     end
 end
 
