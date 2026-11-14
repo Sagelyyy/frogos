@@ -5,7 +5,7 @@ local function searchStock(stock, normal, tempTable)
         local colon = v.name:find(":", 1, true)
         local shortName = v.name:sub(colon + 1)
         if string.find(shortName, normal, nil, true) then
-            table.insert(tempTable, { ["name"] = v.name, ["stock_count"] = v.count })
+            table.insert(tempTable, { ["name"] = v.name, ["stock"] = v.count })
         end
     end
 end
