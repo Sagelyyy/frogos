@@ -1,9 +1,9 @@
 local currentId = os.getComputerID()
 
 if currentId == 10 then
-    shell.run("rm", "stockInventory.lua")
+    shell.run("rm", "startup.lua")
     shell.run("wget",
-        "https://raw.githubusercontent.com/Sagelyyy/frogos/main/controllers/stockInventory.lua", "stockInventory.lua")
+        "https://raw.githubusercontent.com/Sagelyyy/frogos/main/controllers/stockInventory.lua", "startup.lua")
 elseif currentId == 11 then
     shell.run("rm", "order.lua")
     shell.run("rm", "lib/item_search.lua")
