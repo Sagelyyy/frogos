@@ -58,11 +58,11 @@ function generateRequest()
         if #stockData == 1 then
             selectedItem = stockData[1]
         else
-            -- multi item selection
+            return print("Multiple matches not found, NYI")
         end
         if selectedItem then
             if validateStockLevel(selectedItem.stock, userTable["_requestCount"]) then
-                sendOrder(warehouseID, selectedItem)
+                sendOrder(warehouseID, selectedItem.name, userTable["_requestCount"])
             else
                 print("FrogOS: Insufficient stock!")
                 print(("Current stock of %s: %d"):format(
@@ -75,11 +75,13 @@ function generateRequest()
     end
 end
 
-function sendOrder(target, payload)
+function sendOrder(target, payloadName, payloadAmount)
     rednet.send(target,
         {
             ["action"] = "order",
-            ["item"] = payload.name,
-            ["count"] = payload.stock
+            ["item"] = payloadName,
+            ["count"] = payloadAmount
         })
 end
+
+generateRequest()
