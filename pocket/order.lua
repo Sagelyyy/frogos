@@ -1,27 +1,85 @@
 local frogSearch = require("lib.item_search")
 local frogList = require("getList")
-rednet.open("back")
+local warehouseID = 10
 local args = { ... }
---
--- rednet.send(10, { ["item"] = item, ["count"] = quantity })
+local userItem = table.concat(args, " ", 2)
+local userTable = { ["_requestCount"] = args[1], ["name"] = userItem }
+local stockData = {}
+local selectedItem = nil
 
-local item = table.concat(args, " ", 2)
-local stockData = frogSearch.parse(item, frogList.getStock())
--- print(textutils.pagedPrint(textutils.serialise(stockData)))
 
-if stockData ~= nil then
-    if #stockData == 1 then
-        if tonumber(stockData[1].stock) < tonumber(args[1]) then
-            print("FrogOS: Insufficient stock!")
-            print(("Current stock of %s: %d"):format(
-                stockData[1].name,
-                tostring(stockData[1].stock)
-            ))
-            print(("Requested amount: %s"):format(args[1]))
+rednet.open("back")
+
+function normalizeUserInput(table)
+    table.name = string.gsub(table.name, '^%s*(.-)%s*$', '%1')
+    table.name = string.lower(table.name)
+    table._requestCount = tonumber(table._requestCount)
+end
+
+function validateUserInput(table)
+    local maxItemCount = 256
+
+
+    if type(table._requestCount) ~= "number" then
+        return false
+    end
+    if table._requestCount % 1 ~= 0 then
+        return false
+    end
+    if table._requestCount <= 0 then
+        return false
+    end
+    if table._requestCount > maxItemCount then
+        return false
+    end
+    if type(table.name) ~= "string" then
+        return false
+    end
+    if string.len(table.name) <= 0 then
+        return false
+    end
+    return true
+end
+
+function validateStockLevel(stockCount, userRequest)
+    local stockNum = tonumber(stockCount)
+    if stockNum < userRequest then
+        return false
+    end
+    return true
+end
+
+function generateRequest()
+    normalizeUserInput(userTable)
+    if validateUserInput(userTable) == false then
+        return print("Malformed item request, please resubmit")
+    else
+        stockData = frogSearch.parse(userTable.name, frogList.getStock())
+        if #stockData == 1 then
+            selectedItem = stockData[1]
         else
-            rednet.send(10, { ["item"] = stockData[1].name, ["count"] = args[1] })
-            print("FrogOS: Order submitted!")
-            print(("%d x %s"):format(args[1], stockData[1].name))
+            -- multi item selection
+        end
+        if selectedItem then
+            if validateStockLevel(selectedItem.stock, userTable["_requestCount"]) then
+                sendOrder(warehouseID, selectedItem)
+            else
+                print("FrogOS: Insufficient stock!")
+                print(("Current stock of %s: %d"):format(
+                    selectedItem.name,
+                    selectedItem.stock
+                ))
+                print(("Requested amount: %s"):format(userTable["_requestCount"]))
+            end
         end
     end
+end
+
+function sendOrder(target, payload)
+    rednet.send(target,
+        {
+            ["action"] = "order",
+            ["item"] = payload.name,
+            ["count"] = payload.stock
+        })
 end

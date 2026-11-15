@@ -10,11 +10,11 @@ while true do
     if id == pocketID then
         print(("Computer %d sent a a payload of:\n%s"):format(id, textutils.serialise(payload)))
         if payload then
-            if payload == "list" then
+            if payload.action == "list" then
                 local vaultInventory = stockTicker.stock()
                 rednet.send(pocketID, vaultInventory)
             end
-            if payload ~= "list" then
+            if payload.action == "order" then
                 stockTicker.requestFiltered(playerAddress, {
                     name = payload.item,
                     _requestCount = tonumber(payload.count)

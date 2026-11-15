@@ -3,7 +3,7 @@ local frogList = {}
 function frogList.getStock()
     local warehouseID = 10
     rednet.open("back")
-    rednet.send(warehouseID, "list")
+    rednet.send(warehouseID, { ["action"] = "list" })
 
     local sender, data = rednet.receive(nil, 10)
     if sender ~= nil then
