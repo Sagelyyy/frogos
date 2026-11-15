@@ -49,6 +49,18 @@ function validateStockLevel(stockCount, userRequest)
     return true
 end
 
+function handleItemSelection(userSelection, itemTable)
+    print(("Frog OS - Search : %s"):format(userSelection))
+    for index, item in ipairs(itemTable) do
+        print(("%d: %s"):format(index, item.name))
+        if index == 6 then
+            break
+        end
+        local userSelection = read("Selection: ")
+        print(("You selected %s!"):format(userSelection))
+    end
+end
+
 function generateRequest()
     normalizeUserInput(userTable)
     if validateUserInput(userTable) == false then
