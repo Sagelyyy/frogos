@@ -49,15 +49,34 @@ function validateStockLevel(stockCount, userRequest)
     return true
 end
 
+function validateMultiSelection(selection, max)
+    local sNum = tonumber(selection)
+    if sNum == nil then
+        return false
+    end
+    if sNum % 1 ~= 0 then
+        return false
+    end
+    if sNum < 1 or sNum > max then
+        return false
+    end
+    return true
+end
+
 function handleItemSelection(userSelection, itemTable)
     print(("Frog OS - Search : %s"):format(userSelection))
     for index, item in ipairs(itemTable) do
         print(("%d: %s"):format(index, item.name))
-        if index == 6 then
+        if index == 5 then
             break
         end
-        local userSelection = read("Selection: ")
-        print(("You selected %s!"):format(userSelection))
+    end
+    write("Selection: ")
+    local selection = read()
+    if validateMultiSelection(selection, math.min(#itemTable, 5)) then
+        return itemTable[tonumber(selection)]
+    else
+        return nil
     end
 end
 
@@ -66,11 +85,24 @@ function generateRequest()
     if validateUserInput(userTable) == false then
         return print("Malformed item request, please resubmit")
     else
-        stockData = frogSearch.parse(userTable.name, frogList.getStock())
-        if #stockData == 1 then
+        local frogStock = frogList.getStock()
+        if frogStock ~= nil then
+            if type(frogStock) == "table" then
+                if #frogStock > 0 then
+                    stockData = frogSearch.parse(userTable.name, frogStock)
+                else
+                    return print("No reply from warehouse, check computer.")
+                end
+            end
+        else
+            return print("No reply from warehouse, check computer.")
+        end
+        if #stockData == 0 then
+            return print("No items found")
+        elseif #stockData == 1 then
             selectedItem = stockData[1]
         else
-            return print("Multiple matches not found, NYI")
+            selectedItem = handleItemSelection(userTable.name, stockData)
         end
         if selectedItem then
             if validateStockLevel(selectedItem.stock, userTable["_requestCount"]) then
